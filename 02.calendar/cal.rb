@@ -25,9 +25,9 @@ end
 
 def put_date(d)
   if d < 10
-    return " #{d} "
+    " #{d} "
   else
-    return "#{d} "
+    "#{d} "
   end
 end
 
