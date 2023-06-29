@@ -1,41 +1,27 @@
 require 'optparse'
 require 'Date'
 
-# get argv
 options = ARGV.getopts('y:', 'm:')
-options["y"] = Date.today.year  if options["y"].nil?
-options["m"] = Date.today.month if options["m"].nil?
+year = options[":y"].to_i
+month = options[":m"].to_i
+year = Date.today.year if options[":y"].nil?
+month = Date.today.month if options[":m"].nil?
 
-cal_year  = options["y"].to_i
-cal_month = options["m"].to_i
+puts "      #{month}月 #{year}"
+puts "日 月 火 水 木 金 土"
 
-# set calendaer
-first_wday = Date.new(cal_year, cal_month, 1).wday
-last_day = Date.new(cal_year, cal_month, -1).day
-
-# display calender
-puts "      #{cal_month}月 #{cal_year}"
-puts "日 月 花 水 木 金 土"
-
+first_wday = Date.new(year, month, 1).wday
+first_wday.times { print "   " }
+last_day = Date.new(year, month, -1).day
 next_sat = 7 - first_wday
 
-first_wday.times do |i|
-  print "   "
-end
-
-def put_date(d)
-  if d < 10
-    " #{d} "
-  else
-    "#{d} "
-  end
-end
-
+## 右に空白が出力されるのでcenterを使う
 (1..last_day).each do |d|
   if d == next_sat
     next_sat += 7
-    puts put_date(d)
+    puts d.to_s.center(3)
   else
-    print put_date(d)
+    print d.to_s.center(3)
   end
 end
+puts ""
