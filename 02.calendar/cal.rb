@@ -16,6 +16,7 @@ last_day = Date.new(year, month, -1).day
 next_sat = 7 - first_wday
 
 ## 右に空白が出力されるのでcenterを使う
+## 参考：　https://docs.ruby-lang.org/ja/latest/method/String/i/center.html
 (1..last_day).each do |d|
   if d == next_sat
     next_sat += 7
