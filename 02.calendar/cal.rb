@@ -10,17 +10,17 @@ puts "日 月 火 水 木 金 土"
 
 first_wday = Date.new(year, month, 1).wday
 print "   " * first_wday
-last_day = Date.new(year, month, -1).day
-next_sat = 7 - first_wday
 
-# 参考：https://docs.ruby-lang.org/ja/latest/method/String/i/center.html
-(1..last_day).each do |d|
-  day = d.to_s.center(3)
-  if d == next_sat
-    next_sat += 7
+first_date = Date.new(year, month, 1)
+last_date = Date.new(year, month, -1)
+
+(first_date..last_date).each do |d|
+  day = d.day.to_s.center(3)
+  if d.wday == 6
     puts day
   else
     print day
   end
 end
+
 puts ""
