@@ -14,9 +14,9 @@ print "   " * first_wday
 
 last_date = Date.new(year, month, -1)
 
-(first_date..last_date).each do |d|
-  day = d.day.to_s.center(3)
-  if d.wday == 6
+(first_date..last_date).each do |date|
+  day = date.day.to_s.center(3)
+  if date.saturday?
     puts day
   else
     print day
