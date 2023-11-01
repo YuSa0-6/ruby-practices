@@ -8,6 +8,8 @@ def main(row, path)
   display_files
 end
 
+end
+
 def set_paramater
   path = '*'
   option = OptionParser.new
