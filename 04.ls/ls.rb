@@ -13,7 +13,7 @@ end
 def set_paramater
   path = '*'
   option = OptionParser.new
-  option.on('-a') { path = '{.,*}{.,*}' }
+  option.on('-a') {path = '{.,*}{.,*}'}
   option.parse!(ARGV)
   path
 end
