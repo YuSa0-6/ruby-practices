@@ -3,13 +3,13 @@
 require 'optparse'
 
 def main(row)
-  files = find_files
+  files = files()
   formatted_files = format_files(files)
   sorted_files = sort_files(formatted_files, row)
   display_files(sorted_files, row)
 end
 
-def find_files
+def files
   path = '*'
   r_option = false
   option = OptionParser.new
