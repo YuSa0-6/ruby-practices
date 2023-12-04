@@ -3,7 +3,6 @@
 require 'optparse'
 
 def main(row)
-  files = files()
   formatted_files = format_files(files)
   sorted_files = sort_files(formatted_files, row)
   display_files(sorted_files, row)
