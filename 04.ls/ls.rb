@@ -2,6 +2,27 @@
 
 require 'optparse'
 
+p FILE_TYPE = {
+  'fifio' => 'p',
+  'characterSpecial' => 'c',
+  'directory' => 'd',
+  'blockSpecial' => 'b',
+  'file' => '-',
+  'link' => 'l',
+  'socket' => 's'
+}.freeze
+
+p FILE_MODE = {
+  '0' => '---',
+  '1' => '--x',
+  '2' => '-w-',
+  '3' => '-wx',
+  '4' => 'r--',
+  '5' => 'r-x',
+  '6' => 'rw-',
+  '7' => 'rwx'
+}.freeze
+
 def main(row)
   formatted_files = format_files(files)
   sorted_files = sort_files(formatted_files, row)
@@ -11,11 +32,38 @@ end
 def files
   path = '*'
   r_option = false
+  l_option = false
+
   option = OptionParser.new
   option.on('-a') { path = '{.,*}{.,*}' }
   option.on('-r') { r_option = true }
+  option.on('-l') { l_option = true }
   option.parse!(ARGV)
-  r_option ? Dir.glob(path).reverse : Dir.glob(path)
+
+  if r_option
+    Dir.glob(path).reverse
+  elsif l_option
+    set_long_format(path)
+  else
+    Dir.glob(path)
+  end
+end
+
+def set_long_format(path)
+  get_mode(Dir.glob(path))
+  Dir.glob(path)
+end
+
+def get_mode(long_format_files)
+  long_format_files.map do |fs|
+    l_fs = File.lstat(fs)
+    mode = l_fs.mode.to_s(8)
+    print FILE_TYPE[l_fs.ftype]
+    print FILE_MODE[mode[3]]
+    print FILE_MODE[mode[4]]
+    print FILE_MODE[mode[5]]
+    puts ''
+  end
 end
 
 def format_files(files)
