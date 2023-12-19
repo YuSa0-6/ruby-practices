@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'optparse'
+require 'etc'
 
 p FILE_TYPE = {
   'fifio' => 'p',
@@ -62,7 +63,15 @@ def get_mode(long_format_files)
     print FILE_MODE[mode[3]]
     print FILE_MODE[mode[4]]
     print FILE_MODE[mode[5]]
-    puts ''
+    print '  '
+    print l_fs.nlink
+    print ' '
+    print Etc.getpwuid.name
+    print '  '
+    print Etc.getgrgid.name
+    print ' '
+    print l_fs.rdev
+    puts ""
   end
 end
 
