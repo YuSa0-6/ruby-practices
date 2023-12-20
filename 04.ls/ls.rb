@@ -3,7 +3,7 @@
 require 'optparse'
 require 'etc'
 
-p FILE_TYPE = {
+FILE_TYPE = {
   'fifio' => 'p',
   'characterSpecial' => 'c',
   'directory' => 'd',
@@ -13,7 +13,7 @@ p FILE_TYPE = {
   'socket' => 's'
 }.freeze
 
-p FILE_MODE = {
+FILE_MODE = {
   '0' => '---',
   '1' => '--x',
   '2' => '-w-',
@@ -70,7 +70,11 @@ def get_mode(long_format_files)
     print '  '
     print Etc.getgrgid.name
     print ' '
-    print l_fs.rdev
+    print l_fs.size.to_s.rjust(fs.length)
+    print '  '
+    print File.mtime(fs).strftime("%m %d %H:%M")
+    print '  '
+    print fs
     puts ""
   end
 end
