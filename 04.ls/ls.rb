@@ -24,59 +24,42 @@ FILE_MODE = {
   '7' => 'rwx'
 }.freeze
 
-def main(row)
-  formatted_files = format_files(files)
-  sorted_files = sort_files(formatted_files, row)
-  display_files(sorted_files, row)
-end
+ROW = 3
 
-def files
-  path = '*'
-  r_option = false
+def main
   l_option = false
-
+  files = Dir.glob('*')
   option = OptionParser.new
-  option.on('-a') { path = '{.,*}{.,*}' }
-  option.on('-r') { r_option = true }
+  option.on('-a') { files = Dir.glob('{.,*}{.,*}') }
+  option.on('-r') { files = files.reverse }
   option.on('-l') { l_option = true }
   option.parse!(ARGV)
-
-  if r_option
-    Dir.glob(path).reverse
-  elsif l_option
-    set_long_format(path)
-  else
-    Dir.glob(path)
-  end
+  l_option ? long_format_files(files) : short_format_files(files)
 end
 
-def set_long_format(path)
-  get_mode(Dir.glob(path))
-  Dir.glob(path)
+def long_format_files(files)
+  long_formated_files = files.map do |fs|
+    long_name = ''
+    fs_state = File.lstat(fs)
+    mode = fs_state.mode.to_s(8)
+    long_name += FILE_TYPE[fs_state.ftype]
+    long_name << FILE_MODE[mode[3]]
+    long_name << FILE_MODE[mode[4]]
+    long_name << FILE_MODE[mode[5]]
+    long_name << "  #{fs_state.nlink}"
+    long_name << " #{Etc.getpwuid.name}"
+    long_name << "  #{Etc.getgrgid.name}"
+    long_name << "  #{fs_state.size.to_s.rjust(4)}"
+    long_name << " #{File.mtime(fs).strftime('%_m %_d %H:%M')}"
+    long_name << " #{fs}"
+  end
+  display_files(long_formated_files, 1)
 end
 
-def get_mode(long_format_files)
-  long_format_files.map do |fs|
-    l_fs = File.lstat(fs)
-    mode = l_fs.mode.to_s(8)
-    print FILE_TYPE[l_fs.ftype]
-    print FILE_MODE[mode[3]]
-    print FILE_MODE[mode[4]]
-    print FILE_MODE[mode[5]]
-    print '  '
-    print l_fs.nlink
-    print ' '
-    print Etc.getpwuid.name
-    print '  '
-    print Etc.getgrgid.name
-    print ' '
-    print l_fs.size.to_s.rjust(fs.length)
-    print '  '
-    print File.mtime(fs).strftime("%m %d %H:%M")
-    print '  '
-    print fs
-    puts ""
-  end
+def short_format_files(files)
+  formatted_files = format_files(files)
+  sorted_files = sort_files(formatted_files, ROW)
+  display_files(sorted_files, ROW)
 end
 
 def format_files(files)
@@ -84,19 +67,19 @@ def format_files(files)
   files.map { |file| file.ljust(most_long_name.length + 4) }
 end
 
-def sort_files(formatted_files, row)
+def sort_files(files, row)
   sorted_files = []
-  number_of_lines = (formatted_files.length.to_f / row).ceil
+  number_of_lines = (files.length.to_f / row).ceil
   number_of_lines.times do |col_index|
     row.times do |row_index|
-      sorted_files << formatted_files[col_index + number_of_lines * row_index]
+      sorted_files << files[col_index + number_of_lines * row_index]
     end
   end
   sorted_files
 end
 
-def display_files(sorted_files, row)
-  sorted_files.each_with_index { |file, index| print ((index + 1) % row).zero? ? "#{file}\n" : file }
+def display_files(files, row)
+  files.each_with_index { |file, index| print ((index + 1) % row).zero? ? "#{file}\n" : file }
 end
 
-main(3)
+main
