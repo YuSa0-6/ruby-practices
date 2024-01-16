@@ -27,17 +27,27 @@ FILE_MODE = {
 ROW = 3
 
 def main
+  a_option = false
+  r_option = false
   l_option = false
-  files = Dir.glob('*')
   option = OptionParser.new
-  option.on('-a') { files = Dir.glob('{.,*}{.,*}') }
-  option.on('-r') { files = files.reverse }
+  option.on('-a') { a_option = true }
+  option.on('-r') { r_option = true }
   option.on('-l') { l_option = true }
   option.parse!(ARGV)
-  l_option ? long_format_files(files) : short_format_files(files)
+  files = fetch_files(a_option, r_option)
+  l_option ? print_long_format_files(files) : print_short_format_files(files)
 end
 
-def long_format_files(files)
+def fetch_files(a_option, r_option)
+  files = a_option ? Dir.glob('{.,}{.,}') : Dir.glob('*')
+  files = files.reverse if r_option
+  files
+end
+
+def print_long_format_files(files)
+  bytesize_width = fetch_max_bytesize_length(files).length
+
   long_formated_files = files.map do |fs|
     long_name = ''
     fs_state = File.lstat(fs)
@@ -49,14 +59,21 @@ def long_format_files(files)
     long_name << "  #{fs_state.nlink}"
     long_name << " #{Etc.getpwuid.name}"
     long_name << "  #{Etc.getgrgid.name}"
-    long_name << "  #{fs_state.size.to_s.rjust(4)}"
+    long_name << "  #{fs_state.size.to_s.rjust(bytesize_width)}"
     long_name << " #{File.mtime(fs).strftime('%_m %_d %H:%M')}"
-    long_name << " #{fs}"
+    long_name << " #{fs}\n"
   end
-  display_files(long_formated_files, 1)
+  puts long_formated_files
 end
 
-def short_format_files(files)
+def fetch_max_bytesize_length(files)
+  fs_state_size = files.map do |fs|
+    File.lstat(fs).size.to_s
+  end
+  fs_state_size.max_by(&:length)
+end
+
+def print_short_format_files(files)
   formatted_files = format_files(files)
   sorted_files = sort_files(formatted_files, ROW)
   display_files(sorted_files, ROW)
