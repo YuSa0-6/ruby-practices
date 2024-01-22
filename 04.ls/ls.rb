@@ -36,16 +36,16 @@ def main
   option.on('-l') { l_option = true }
   option.parse!(ARGV)
   files = fetch_files(a_option, r_option)
-  l_option ? print_long_format_files(files) : print_short_format_files(files)
+  l_option ? display_long_format_files(files) : display_short_format_files(files)
 end
 
 def fetch_files(a_option, r_option)
-  files = a_option ? Dir.glob('{.,}{.,}') : Dir.glob('*')
+  files = a_option ? Dir.glob("*", File::FNM_DOTMATCH) : Dir.glob('*')
   files = files.reverse if r_option
   files
 end
 
-def print_long_format_files(files)
+def display_long_format_files(files)
   bytesize_width = fetch_max_bytesize_length(files).length
 
   long_formated_files = files.map do |fs|
@@ -73,7 +73,7 @@ def fetch_max_bytesize_length(files)
   fs_state_size.max_by(&:length)
 end
 
-def print_short_format_files(files)
+def display_short_format_files(files)
   formatted_files = format_files(files)
   sorted_files = sort_files(formatted_files, ROW)
   display_files(sorted_files, ROW)
