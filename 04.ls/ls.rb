@@ -40,7 +40,7 @@ def main
 end
 
 def fetch_files(a_option, r_option)
-  files = a_option ? Dir.glob('{.,}{.,}') : Dir.glob('*')
+  files = a_option ? Dir.glob('{.,*}{.,*}') : Dir.glob('*')
   files = files.reverse if r_option
   files
 end
