@@ -51,7 +51,7 @@ def display_long_format_files(files)
   long_formated_files = files.map do |fs|
     long_name = ''
     fs_state = File.lstat(fs)
-    mode = format("%06d", fs_state.mode.to_s(8))
+    mode = format('%06d', fs_state.mode.to_s(8))
     long_name += FILE_TYPE[fs_state.ftype]
     long_name << FILE_MODE[mode[3]]
     long_name << FILE_MODE[mode[4]]
