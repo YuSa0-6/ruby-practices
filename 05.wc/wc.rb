@@ -39,18 +39,26 @@ def fetch_bytesize(path)
   File::Stat.new(path).size
 end
 
+def display_total(total, params)
+  print        total[:lines].to_s.rjust(8) if params[:l]
+  print        total[:words].to_s.rjust(8) if params[:w]
+  print        total[:bytesize].to_s.rjust(8) if params[:c]
+  print " total\n"
+end
+
 def display_result(file_paths, params)
   total = { lines: 0, words: 0, bytesize:0 }
   file_paths.map do |path|
     text = File.read(path)
-    print "       #{lines = count_lines(text)}" if params[:l]
-    print "       #{words = count_words(text)}" if params[:w]
-    print "       #{bytesize = fetch_bytesize(path)}" if params[:c]
+    print count_lines(text).to_s.rjust(8)
+    print count_words(text).to_s.rjust(8)
+    print fetch_bytesize(path).to_s.rjust(8)
     puts " #{path}"
-    total[:lines] += lines if params[:l]
-    total[:words] += words if params[:w]
-    total[:bytesize] += bytesize if params[:c]
+    total[:lines] += count_lines(text)
+    total[:words] += count_words(text)
+    total[:bytesize] += fetch_bytesize(path)
   end
+  display_total(total, params) if file_paths.count > 1
 end
 
 main
