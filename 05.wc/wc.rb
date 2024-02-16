@@ -1,18 +1,23 @@
-# w(単語数), l(--max-lines-length), c(--bytes) を実装する。
+# frozen_string_literal: true
+
+# w(words), l(lines), c(--bytes) を実装する。
 require 'optparse'
+require 'debug'
 
 def main
   params = fetch_params
   paths = fetch_paths
   display_result(paths, params)
 end
+
 def fetch_params
   opt = OptionParser.new
   params = {w: false, l: false, c: false}
-  opt.on('-w'){|v| params[:w] = v}
-  opt.on('-l'){|v| params[:l] = v}
-  opt.on('-c'){|v| params[:c] = v}
+  opt.on('-w') { |v| params[:w] = v }
+  opt.on('-l') { |v| params[:l] = v }
+  opt.on('-c') { |v| params[:c] = v }
   opt.parse!(ARGV, into: params)
+  params = { w: true, l: true, c: true } if !params.values.any?
   params
 end
 
@@ -30,23 +35,22 @@ def count_words(text)
   text.split(/\s+/).size
 end
 
-def fetch_bytes(path)
+def fetch_bytesize(path)
   File::Stat.new(path).size
 end
 
 def display_result(file_paths, params)
-  total = {lines: 0, words: 0, file_size: 0}
-  file_paths.map{|path|
+  total = { lines: 0, words: 0, bytesize:0 }
+  file_paths.map do |path|
     text = File.read(path)
-    print lines = count_lines(text) 
-    print words = count_words(text)
-    print file_size = fetch_bytes(path)
-    puts path
-    total[:lines] += lines
-    total[:words] += words
-    total[:file_size] += file_size
-  }
-  print file_paths.count > 1 ? "#{total[:lines]}  #{total[:words]}  #{total[:file_size]}  total\n" : nil
+    print "       #{lines = count_lines(text)}" if params[:l]
+    print "       #{words = count_words(text)}" if params[:w]
+    print "       #{bytesize = fetch_bytesize(path)}" if params[:c]
+    puts " #{path}"
+    total[:lines] += lines if params[:l]
+    total[:words] += words if params[:w]
+    total[:bytesize] += bytesize if params[:c]
+  end
 end
 
 main
