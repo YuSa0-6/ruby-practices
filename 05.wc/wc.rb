@@ -1,30 +1,52 @@
-# w(単語数), l(--max-line-length), c(--bytes) を実装する。
+# w(単語数), l(--max-lines-length), c(--bytes) を実装する。
 require 'optparse'
 
-opt = OptionParser.new
-params = {}
-# params を受け取る
-# FilePathを受け取る
-opt.on('-w'){|v| params[:w] = v}
-opt.on('-l'){|v| params[:l] = v}
-opt.on('-c'){|v| params[:l] = v}
-opt.parse!(ARGV, into: params)
-p file_paths = ARGV
-p params
-# ファイルパスがない場合は標準入力に移る。(ARGV.empty?)
-if ARGV.empty?
-  p file_paths = $stdin.read.split("\n")
+def main
+  params = fetch_params
+  paths = fetch_paths
+  display_result(paths, params)
+end
+def fetch_params
+  opt = OptionParser.new
+  params = {w: false, l: false, c: false}
+  opt.on('-w'){|v| params[:w] = v}
+  opt.on('-l'){|v| params[:l] = v}
+  opt.on('-c'){|v| params[:c] = v}
+  opt.parse!(ARGV, into: params)
+  params
 end
 
-total = {lines: 0, words: 0, file_size: 0}
-file_paths.map{|path|
-  text = File.read(path)
-  print total[:lines] += text.lines.count  # １.ファイル内の行数をカウントする
-  print total[:words] += text.split(/\s+/).size  # ２.単語数をカウントする
-  print total[:file_size] += File::Stat.new(path).size # ３.ファイル容量をカウントする
-  puts path
-  puts total
-}
+def fetch_paths
+  file_paths = ARGV
+  file_paths = $stdin.read.split("\n") if file_paths.empty?
+  file_paths
+end
 
-# if 複数ファイルの場合Totalを表示する。
-puts total
+def count_lines(text)
+  text.lines.count
+end
+
+def count_words(text)
+  text.split(/\s+/).size
+end
+
+def fetch_bytes(path)
+  File::Stat.new(path).size
+end
+
+def display_result(file_paths, params)
+  total = {lines: 0, words: 0, file_size: 0}
+  file_paths.map{|path|
+    text = File.read(path)
+    print lines = count_lines(text) 
+    print words = count_words(text)
+    print file_size = fetch_bytes(path)
+    puts path
+    total[:lines] += lines
+    total[:words] += words
+    total[:file_size] += file_size
+  }
+  print file_paths.count > 1 ? "#{total[:lines]}  #{total[:words]}  #{total[:file_size]}  total\n" : nil
+end
+
+main
