@@ -50,9 +50,9 @@ def display_result(file_paths, params)
   total = { lines: 0, words: 0, bytesize:0 }
   file_paths.map do |path|
     text = File.read(path)
-    print count_lines(text).to_s.rjust(8)
-    print count_words(text).to_s.rjust(8)
-    print fetch_bytesize(path).to_s.rjust(8)
+    print count_lines(text).to_s.rjust(8) if params[:l]
+    print count_words(text).to_s.rjust(8) if params[:w]
+    print fetch_bytesize(path).to_s.rjust(8) if params[:c]
     puts " #{path}"
     total[:lines] += count_lines(text)
     total[:words] += count_words(text)
