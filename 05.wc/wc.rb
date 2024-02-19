@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'optparse'
 require 'debug'
 
@@ -38,14 +39,22 @@ def fetch_bytesize(path)
 end
 
 def display_total(total, params)
-  print        total[:lines].to_s.rjust(8) if params[:l]
-  print        total[:words].to_s.rjust(8) if params[:w]
-  print        total[:bytesize].to_s.rjust(8) if params[:c]
+  print total[:lines].to_s.rjust(8) if params[:l]
+  print total[:words].to_s.rjust(8) if params[:w]
+  print total[:bytesize].to_s.rjust(8) if params[:c]
   print " total\n"
 end
 
+def init_total
+  { lines: 0, words: 0, bytesize: 0 }
+end
+
+def multiple_paths?(file_paths)
+  file_paths.count > 1
+end
+
 def display_result(file_paths, params)
-  total = { lines: 0, words: 0, bytesize: 0 }
+  total = init_total
   file_paths.map do |path|
     text = File.read(path)
     print count_lines(text).to_s.rjust(8) if params[:l]
@@ -56,7 +65,7 @@ def display_result(file_paths, params)
     total[:words] += count_words(text)
     total[:bytesize] += fetch_bytesize(path)
   end
-  display_total(total, params) if file_paths.count > 1
+  display_total(total, params) if multiple_paths?(file_paths)
 end
 
 main
