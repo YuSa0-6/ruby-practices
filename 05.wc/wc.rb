@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-
-# w(words), l(lines), c(--bytes) を実装する。
 require 'optparse'
 require 'debug'
 
