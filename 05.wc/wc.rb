@@ -12,12 +12,12 @@ end
 
 def fetch_params
   opt = OptionParser.new
-  params = {w: false, l: false, c: false}
+  params = { w: false, l: false, c: false }
   opt.on('-w') { |v| params[:w] = v }
   opt.on('-l') { |v| params[:l] = v }
   opt.on('-c') { |v| params[:c] = v }
   opt.parse!(ARGV, into: params)
-  params = { w: true, l: true, c: true } if !params.values.any?
+  params = { w: true, l: true, c: true } if params.values.none?
   params
 end
 
@@ -47,7 +47,7 @@ def display_total(total, params)
 end
 
 def display_result(file_paths, params)
-  total = { lines: 0, words: 0, bytesize:0 }
+  total = { lines: 0, words: 0, bytesize: 0 }
   file_paths.map do |path|
     text = File.read(path)
     print count_lines(text).to_s.rjust(8) if params[:l]
