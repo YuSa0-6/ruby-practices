@@ -7,7 +7,7 @@ require 'debug'
 def main
   params = fetch_params
   file_paths = fetch_paths
-  display_result(paths, params)
+  display_result(file_paths, params)
 end
 
 def fetch_params
