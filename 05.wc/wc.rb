@@ -22,8 +22,8 @@ end
 
 def fetch_paths
   file_paths = ARGV
-  file_paths = $stdin.read.split("\n") if file_paths.empty?
-  file_paths
+  file_paths = readlines.map { |v| v.scan(/(?!total)(?<=\s)[a-z0-9]+.[a-z0-9]+\n/) } if file_paths.empty?
+  file_paths.flatten.map(&:chomp)
 end
 
 def count_lines(text)
