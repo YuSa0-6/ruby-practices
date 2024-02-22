@@ -22,7 +22,7 @@ end
 
 def fetch_paths
   file_paths = ARGV
-  file_paths = readlines.map { |v| v.scan(/(?!total)(?<=\s)[a-z0-9]+.[a-z0-9]+\n/) } if file_paths.empty?
+  file_paths = readlines.map { |v| v.scan(/(?!total)(?<=\s)[A-Za-z0-9]+.[A-Za-z0-9]+\n/) } if file_paths.empty?
   file_paths.flatten.map(&:chomp)
 end
 
