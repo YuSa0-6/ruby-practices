@@ -6,7 +6,7 @@ require 'debug'
 def main
   params = fetch_params
   paths = ARGV
-  p results = count_results(paths: paths)
+  results = count_results(paths: paths)
   print_results(results: results, params: params)
   print_total(results: results) if multi_path?(results: results) 
 end
@@ -23,13 +23,13 @@ end
 
 def count_results(paths:)
   if paths.empty?
-    [fetch_count(text: $stdin.read, path: '')]
+    [fetch_counts(text: $stdin.read, path: '')]
   else
-    paths.map { |path| fetch_count(text: File.read(path), path: path) }
+    paths.map { |path| fetch_counts(text: File.read(path), path: path) }
   end
 end
 
-def fetch_count(text:, path:)
+def fetch_counts(text:, path:)
   {
     lines: text.lines.count,
     words: text.split(/\s+/).size,
