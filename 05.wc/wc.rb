@@ -5,10 +5,10 @@ require 'debug'
 
 def main
   params = fetch_params
-  results = count_results(paths: ARGV)
+  paths = ARGV
+  p results = count_results(paths: paths)
   print_results(results: results, params: params)
-  p results[:path]
-  print_total(results: results)
+  print_total(results: results) if multi_path?(results: results) 
 end
 
 def fetch_params
@@ -23,7 +23,7 @@ end
 
 def count_results(paths:)
   if paths.empty?
-    fetch_count(text: $stdin.read, path: '')
+    [fetch_count(text: $stdin.read, path: '')]
   else
     paths.map { |path| fetch_count(text: File.read(path), path: path) }
   end
