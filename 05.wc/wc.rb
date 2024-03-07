@@ -52,14 +52,14 @@ def multi_path?(results:)
 end
 
 def print_total(results:, params:)
-  totals = count_totals(results:)
+  totals = count_totals(results)
   print totals[:lines].to_s.rjust(8) if params[:l]
   print totals[:words].to_s.rjust(8) if params[:w]
   print totals[:textsize].to_s.rjust(8) if params[:c]
   print " total\n"
 end
 
-def count_totals(results:)
+def count_totals(results)
   totals = { lines: 0, words: 0, textsize: 0 }
   results.map do |result|
     totals[:lines] += result[:lines]
