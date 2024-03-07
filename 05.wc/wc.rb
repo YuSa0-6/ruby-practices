@@ -39,7 +39,7 @@ def fetch_counts(text:, path:)
 end
 
 def print_results(results:, params:)
-  results.map do |result|
+  results.each do |result|
     print result[:lines].to_s.rjust(8) if params[:l]
     print result[:words].to_s.rjust(8) if params[:w]
     print result[:textsize].to_s.rjust(8) if params[:c]
