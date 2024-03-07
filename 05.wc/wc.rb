@@ -51,7 +51,7 @@ def multi_path?(results:)
   results.length > 1
 end
 
-def print_total(results:)
+def print_total(results:, params:)
   totals = count_totals(results:)
   print totals[:lines].to_s.rjust(8) if params[:l]
   print totals[:words].to_s.rjust(8) if params[:w]
