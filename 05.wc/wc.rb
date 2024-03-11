@@ -6,9 +6,9 @@ require 'debug'
 def main
   params = fetch_params
   paths = ARGV
-  results = count_results(paths:)
+  results = count_results(paths)
   print_results(results:, params:)
-  print_total(results:, params:) if multi_path?(results:)
+  print_total(results:, params:) if multi_path?(results)
 end
 
 def fetch_params
@@ -21,7 +21,7 @@ def fetch_params
   params.empty? ? params = { l: true, w: true, c: true } : params
 end
 
-def count_results(paths:)
+def count_results(paths)
   if paths.empty?
     [fetch_counts(text: $stdin.read, path: '')]
   else
@@ -47,7 +47,7 @@ def print_results(results:, params:)
   end
 end
 
-def multi_path?(results:)
+def multi_path?(results)
   results.length > 1
 end
 
