@@ -32,7 +32,7 @@ end
 def fetch_counts(text:, path:)
   {
     lines: text.lines.count,
-    words: text.split(/\s+/).size,
+    words: text.split(/\s+/).count { |w| !w.empty? },
     textsize: text.bytesize,
     path:
   }
