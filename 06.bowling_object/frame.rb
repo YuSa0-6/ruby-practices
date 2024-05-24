@@ -10,6 +10,18 @@ class Frame
     [Shot.new(@first_mark).count_pins, Shot.new(@second_mark).count_pins].sum
   end
 
+  def double_strike_score(next_frame, next_after_frame)
+    MAX_PINS*2 + next_after_frame.first_shot_score
+  end
+
+  def strike_score(next_frame)
+    MAX_PINS + next_frame.score
+  end
+
+  def spare_score(next_frame)
+    MAX_PINS + next_frame.first_shot_score
+  end
+
   def first_shot_score
     Shot.new(@first_mark).count_pins
   end

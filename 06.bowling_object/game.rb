@@ -1,8 +1,10 @@
 require './frame'
 class Game
+  DOUBLE_STRIKE_SCORE = 20
+  STRIKE_SCORE = 10
   def initialize
-    p @marks = ARGV[0].split(',')
-    p @frames = create_frames.map { Frame.new(_1, _2)}
+    @marks = ARGV[0].split(',')
+    @frames = create_frames.map { Frame.new(_1, _2)}
     @total_score = 0
   end
 
@@ -23,17 +25,18 @@ class Game
     @frames.each_with_index do |frame, idx|
       next_frame = @frames[idx+1]
       next_after_frame = @frames[idx+2]
-      p @total_score += if frame.double_strike?(next_frame)
-        20 + next_after_frame.first_shot_score
+      @total_score += if frame.double_strike?(next_frame)
+        frame.double_strike_score(next_frame, next_after_frame)
       elsif frame.strike?
-        10 + next_frame.score
+        frame.strike_score(next_frame)
       elsif frame.spare?
-        10 + next_frame.first_shot_score
+        frame.spare_score(next_frame)
       else
         frame.score
       end
       break if idx == 9
     end
+    p @total_score
   end
 end
 
