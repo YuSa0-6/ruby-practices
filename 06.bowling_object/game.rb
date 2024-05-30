@@ -9,7 +9,7 @@ class Game
     @total_score = 0
   end
 
-  def create_frames
+  def replace_marks
     replaced_marks = []
     @marks.each do |mark|
       if mark == 'X'
