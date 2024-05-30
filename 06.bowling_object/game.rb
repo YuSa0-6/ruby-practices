@@ -3,6 +3,7 @@ require './frame'
 class Game
   DOUBLE_STRIKE_SCORE = 20
   STRIKE_SCORE = 10
+  
   def initialize
     @marks = ARGV[0].split(',')
     @frames = create_frames.map { Frame.new(_1, _2)}
