@@ -6,8 +6,6 @@ class Shot
   end
 
   def count_pins
-    return 10 if @mark == 'X'
-
-    @mark.to_i
+    @mark == 'X' ? 10 : @mark.to_i
   end
 end
