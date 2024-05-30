@@ -41,4 +41,16 @@ class Frame
   def spare?
     @first_shot.count_pins + @second_shot.count_pins == 10
   end
+
+  def score_jugement(frame, next_frame, next_after_frame)
+    if frame.double_strike?(next_frame)
+      frame.double_strike_score(next_frame, next_after_frame)
+    elsif frame.strike?
+      frame.strike_score(next_frame)
+    elsif frame.spare?
+      frame.spare_score(next_frame)
+    else
+      frame.score
+    end
+  end
 end
