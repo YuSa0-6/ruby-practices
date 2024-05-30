@@ -5,8 +5,7 @@ require './frame'
 class Game
   def initialize
     @marks = ARGV[0].split(',')
-    @frames = create_frames.map { Frame.new(_1, _2) }
-    @total_score = 0
+    @frames = replace_marks.map { |mark| Frame.new(mark[0], mark[1]) }
   end
 
   def replace_marks
@@ -23,6 +22,7 @@ class Game
   end
 
   def game_count
+    total_score = 0
     @frames.each_with_index do |frame, idx|
       next_frame = @frames[idx + 1]
       next_after_frame = @frames[idx + 2]
@@ -41,4 +41,4 @@ class Game
   end
 end
 
-Game.new.game_count
+puts Game.new.game_count
