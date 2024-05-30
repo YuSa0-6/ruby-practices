@@ -1,4 +1,5 @@
 require './frame'
+
 class Game
   DOUBLE_STRIKE_SCORE = 20
   STRIKE_SCORE = 10
