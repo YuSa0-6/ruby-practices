@@ -4,6 +4,7 @@ require './shot'
 
 class Frame
   MAX_PINS = 10
+
   def initialize(first_mark, second_mark)
     @first_mark = first_mark
     @second_mark = second_mark
