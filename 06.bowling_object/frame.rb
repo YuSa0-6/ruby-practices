@@ -6,12 +6,12 @@ class Frame
   MAX_PINS = 10
 
   def initialize(first_mark, second_mark)
-    @first_mark = first_mark
-    @second_mark = second_mark
+    @first_shot = Shot.new(first_mark)
+    @second_shot = Shot.new(second_mark)
   end
 
   def score
-    [Shot.new(@first_mark).count_pins, Shot.new(@second_mark).count_pins].sum
+    [@first_shot.count_pins, @second_shot.count_pins].sum
   end
 
   def double_strike_score(_next_frame, next_after_frame)
@@ -27,7 +27,7 @@ class Frame
   end
 
   def first_shot_score
-    Shot.new(@first_mark).count_pins
+    @first_shot.count_pins
   end
 
   def double_strike?(next_frame)
@@ -35,10 +35,10 @@ class Frame
   end
 
   def strike?
-    @first_mark == 'X'
+    @first_shot.count_pins == MAX_PINS
   end
 
   def spare?
-    Shot.new(@first_mark).count_pins + Shot.new(@second_mark).count_pins == 10
+    @first_shot.count_pins + @second_shot.count_pins == 10
   end
 end
