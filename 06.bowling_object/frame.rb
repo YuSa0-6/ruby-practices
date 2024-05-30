@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require './shot'
+
 class Frame
   MAX_PINS = 10
   def initialize(first_mark, second_mark)
