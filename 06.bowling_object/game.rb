@@ -10,15 +10,15 @@ class Game
 
   def replace_marks
     replaced_marks = []
-    @marks.each_with_index do |mark, index|
-      if mark == 'X'
-        replaced_marks << 'X'
+    @marks.each do |mark|
+      if mark == Shot::STRIKE_MARK
+        replaced_marks << Shot::STRIKE_MARK
         replaced_marks << '0'
       else
         replaced_marks << mark
       end
     end
-    replaced_marks.each_slice(2).to_a.map
+    replaced_marks.each_slice(2).to_a
   end
 
   def game_count
