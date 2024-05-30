@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require './frame'
+
 class Game
   def initialize
     @marks = ARGV[0].split(',')
