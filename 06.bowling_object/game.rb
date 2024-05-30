@@ -26,7 +26,7 @@ class Game
     @frames.each_with_index do |frame, idx|
       next_frame = @frames[idx + 1]
       next_after_frame = @frames[idx + 2]
-      @total_score += if frame.double_strike?(next_frame)
+      total_score += if frame.double_strike?(next_frame)
                         frame.double_strike_score(next_frame, next_after_frame)
                       elsif frame.strike?
                         frame.strike_score(next_frame)
@@ -37,7 +37,7 @@ class Game
                       end
       break if idx == 9
     end
-    p @total_score
+    total_score
   end
 end
 
