@@ -5,9 +5,10 @@ require './shot'
 class Frame
   MAX_PINS = 10
 
-  def initialize(first_mark, second_mark, third_mark = ZERO_MARK)
   def initialize(first_mark, second_mark, third_mark = '0')
+    @first_shot = Shot.new(first_mark)
     @second_shot = Shot.new(second_mark)
+    @third_shot = Shot.new(third_mark)
   end
 
   def score
@@ -36,7 +37,7 @@ class Frame
 
   def score_jugement(next_frame, after_next_frame)
     if @first_shot.strike? && next_frame.strike?
-    MAX_PINS * 2 + after_next_frame.first_shot_score
+      MAX_PINS * 2 + after_next_frame.first_shot_score
     elsif @first_shot.strike?
       strike_score(next_frame)
     elsif spare?
