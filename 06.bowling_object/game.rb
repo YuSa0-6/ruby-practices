@@ -28,7 +28,7 @@ class Game
     @frames.each_with_index do |frame, index|
       next_frame = @frames[index + 1]
       after_next_frame = @frames[index + 2]
-      total_score += frame.score_jugement(frame, next_frame, after_next_frame)
+      total_score += frame.score_jugement(next_frame, after_next_frame)
       break if index == 9
     end
     total_score
