@@ -14,8 +14,8 @@ class Frame
     [@first_shot.count_pins, @second_shot.count_pins].sum
   end
 
-  def double_strike_score(_next_frame, next_after_frame)
-    MAX_PINS * 2 + next_after_frame.first_shot_score
+  def double_strike_score(after_next_frame)
+    MAX_PINS * 2 + after_next_frame.first_shot_score
   end
 
   def strike_score(next_frame)
@@ -42,9 +42,9 @@ class Frame
     @first_shot.count_pins + @second_shot.count_pins == 10
   end
 
-  def score_jugement(frame, next_frame, next_after_frame)
+  def score_jugement(frame, next_frame, after_next_frame)
     if frame.double_strike?(next_frame)
-      frame.double_strike_score(next_frame, next_after_frame)
+      frame.double_strike_score(next_frame, after_next_frame)
     elsif frame.strike?
       frame.strike_score(next_frame)
     elsif frame.spare?
