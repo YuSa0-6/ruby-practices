@@ -4,21 +4,23 @@ require './frame'
 
 class Game
   def initialize
-    @marks = ARGV[0].split(',')
-    @frames = replace_marks.map { |mark| Frame.new(mark[0], mark[1]) }
+    @shots = ARGV[0].split(',').map { |mark| Shot.new(mark) }
+    @frames = build_frames.map { |frame| Frame.new(frame[0], frame[1]) }
   end
 
-  def replace_marks
-    replaced_marks = []
-    @marks.each do |mark|
-      if mark == Shot::STRIKE_MARK
-        replaced_marks << Shot::STRIKE_MARK
-        replaced_marks << '0'
+  def build_frames
+    build_shots = []
+    @shots.each do |shot|
+      if shot.strike?
+        build_shots << Shot::STRIKE_MARK
+        build_shots << '0'
       else
-        replaced_marks << mark
+        build_shots << shot.count_pins
       end
     end
-    replaced_marks.each_slice(2).to_a
+    frames = build_shots.each_slice(2).to_a
+    frames << frames[9] + frames[10]
+    frames
   end
 
   def game_count

@@ -4,15 +4,14 @@ require './shot'
 
 class Frame
   MAX_PINS = 10
-  ZERO_MARK = '0'
 
   def initialize(first_mark, second_mark, third_mark = ZERO_MARK)
-    @first_shot = Shot.new(first_mark)
+  def initialize(first_mark, second_mark, third_mark = '0')
     @second_shot = Shot.new(second_mark)
   end
 
   def score
-    [@first_shot.count_pins, @second_shot.count_pins].sum
+    [@first_shot.count_pins, @second_shot.count_pins, @third_shot.count_pins].sum
   end
 
   def strike_score(next_frame)
