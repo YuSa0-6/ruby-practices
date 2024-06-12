@@ -19,7 +19,7 @@ class Game
       end
     end
     frames = build_shots.each_slice(2).to_a
-    frames << frames[9] + frames[10]
+    frames << frames.last(2)
     frames
   end
 
